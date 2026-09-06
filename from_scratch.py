@@ -210,11 +210,98 @@ def accuracy(y_test, predictions):
 predictions = predict(x_train, y_train, x_test)
 
 print("Accuracy:", accuracy(y_test, predictions))
-print("Predictions:", predictions[:30])
-print("Actual:     ", y_test[:30])
-print("Predicted classes:", np.unique(predictions, return_counts=True))
-print("Actual classes:   ", np.unique(y_test, return_counts=True))
-probabilities = prob(x_train, y_train, x_test)
 
-print(probabilities[0])
-print("sum:", sum(probabilities[0]))
+def confusion_values(y_test, predictions, target_class):
+    tp = 0
+    tn = 0
+    fp = 0
+    fn = 0
+
+    for actual, predicted in zip(y_test,predictions):
+      if actual == target_class and predicted == target_class:
+          tp += 1
+      elif actual != target_class and predicted != target_class:
+         tn += 1
+      elif actual != target_class and predicted == target_class:
+         fp += 1
+      else:
+         fn += 1
+    return tp,tn,fp,fn
+
+classes = np.unique(y_test)
+
+for target_class in classes:
+   tp,tn,fp,fn = confusion_values(y_test,predictions, target_class)
+
+   print(f"Class {target_class}: "f"TP = {tp}, TN = {tn}, FP = {fp}, FN = {fn}")
+
+def precision_recall(y_test, predictions, target_class):
+   tp,tn,fp,fn = confusion_values(y_test, predictions, target_class)
+   if tp+fp == 0:
+      precision = 0
+   else:
+      precision = tp / (tp + fp)
+
+   if tp + fn == 0:
+      recall = 0
+   else:
+      recall = tp / (tp + fn)
+   return precision, recall
+
+classes = np.unique(y_test)
+for target_class in classes:
+   precision,recall = precision_recall(y_test,predictions,target_class)
+
+   print('class:', target_class)
+   print('Precision:', precision)
+   print('Recall:', recall)
+
+def f1_score(y_test, predictions, target_class):
+
+    precision, recall = precision_recall(y_test,predictions,target_class)
+    if precision + recall == 0:
+       return 0
+    else:
+       return 2 * (precision * recall) / (precision + recall)
+
+for target_class in classes:
+   f1 = f1_score(y_test,predictions,target_class)
+   print(f"Class {target_class}")
+   print("F1:", f1)
+
+macro_sum = 0
+for target_class in classes:
+   f1 = f1_score(y_test,predictions,target_class)
+   macro_sum += f1
+macro_avg = macro_sum / len(classes)
+
+print('average of f1:', macro_avg)
+
+classes, counts = np.unique(y_test, return_counts=True)
+total_count = sum(counts)
+f1_weights = []
+for target_class, count in zip(classes,counts):
+   weight = count / total_count
+   f1 = f1_score(y_test, predictions,target_class)
+   f1_weighted = f1 * weight
+   f1_weights.append(f1_weighted)
+weighted_f1 = sum(f1_weights)
+print("Weighted F1:", weighted_f1)
+
+def confusion_matrix(y_test, predictions, classes):
+
+    matrix = np.zeros((len(classes), len(classes)), dtype=int)
+
+    for actual, predicted in zip(y_test, predictions):
+
+        actual_index = np.where(classes == actual)[0][0]
+        predicted_index = np.where(classes == predicted)[0][0]
+
+        matrix[actual_index][predicted_index] += 1
+
+    return matrix
+
+classes = np.unique(y_test)
+
+cm = confusion_matrix(y_test, predictions, classes)
+print(cm)
