@@ -24,6 +24,6 @@ f1 = f1_score(y_test, predictions, average=None)
 
 print('scikit Accuracy:', accuracy)
 print('Confusion Metrix:', cm)
-print('F1 Score:', f1_macro)
+print('F1 Average:', f1_macro)
 print('F1 Weighted:', f1_weighted)
 print('F1 Score:', f1)
