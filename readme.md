@@ -160,6 +160,7 @@ confusion Matrix:
  [ 0  0  0  1  4  0]]
 Average of f1: 0.31674271663297954
 Weighted F1: 0.54877120183125
+F1 scores: ['Class 3: 0', 'Class 4: 0.26666666666666666', 'Class 5: 0.6590038314176245', 'Class 6: 0.5116279069767442', 'Class 7: 0.4631578947368421', 'Class 8: 0']
 ```
 
 ### Scikit-learn
