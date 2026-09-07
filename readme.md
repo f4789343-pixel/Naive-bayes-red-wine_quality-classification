@@ -188,7 +188,7 @@ The from-scratch implementation was compared with scikit-learn's `GaussianNB` us
 
 The confusion matrix shows the number of correctly and incorrectly classified wine-quality classes.
 
-![Confusion Matrix](confusion_matrix.png)
+![Confusion Matrix](Confusion_Matrix.png)
 
 
 
