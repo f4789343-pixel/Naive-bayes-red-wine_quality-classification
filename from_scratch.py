@@ -47,7 +47,7 @@ def prior(y_train):
    for i in count:
       priors.append(i/total)
    return priors
-print(prior(y_train))
+
 
 def multi_features(x_train):
    all_values = []
@@ -58,7 +58,7 @@ def multi_features(x_train):
       all_values.append(values)
    return all_values
 x = multi_features(x_train)
-print('sh',np.shape(x))
+
 
 def mean(x_train):
    features = multi_features(x_train)
@@ -67,7 +67,7 @@ def mean(x_train):
       mean = sum(feature) / len(feature)
       means.append(mean)
    return means
-print(mean(x_train))
+
 
 def std(x_train):
    features = multi_features(x_train)
@@ -81,7 +81,7 @@ def std(x_train):
       std = np.sqrt(variance)
       stds.append(std)
    return stds
-print(std(x_train))
+
 
 def separate_classes(x_train, y_train):
    classes = np.unique(y_train)
@@ -93,10 +93,7 @@ def separate_classes(x_train, y_train):
             features.append(x_train[i])
       class_features.append(features)
    return classes, class_features
-print('mmm',separate_classes(x_train, y_train))
-print("x_test shape:", x_test.shape)
-print("x_test[0]:", x_test[0])
-print("x_test[0] type:", type(x_test[0]))
+
 
 def class_mean(x_train, y_train):
    classes, class_features = separate_classes(x_train, y_train)
@@ -263,18 +260,18 @@ def f1_score(y_test, predictions, target_class):
        return 0
     else:
        return 2 * (precision * recall) / (precision + recall)
-
+       
+f1_scores = []
 for target_class in classes:
    f1 = f1_score(y_test,predictions,target_class)
-   print(f"Class {target_class}")
-   print("F1:", f1)
+   f1_scores.append(f"Class {target_class}: {f1}")
+print('F1 scores:', f1_scores)
 
 macro_sum = 0
 for target_class in classes:
    f1 = f1_score(y_test,predictions,target_class)
    macro_sum += f1
 macro_avg = macro_sum / len(classes)
-
 print('average of f1:', macro_avg)
 
 classes, counts = np.unique(y_test, return_counts=True)
